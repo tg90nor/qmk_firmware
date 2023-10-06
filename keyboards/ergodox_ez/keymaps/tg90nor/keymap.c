@@ -61,6 +61,7 @@ const key_override_t **key_overrides = (const key_override_t *[]){
     &ko_make_with_layers(MOD_MASK_SHIFT, KC_TILD, KC_8, (1 << _PROG)),
     &ko_make_with_layers(MOD_MASK_SHIFT, KC_PLUS, KC_9, (1 << _PROG)),
     &ko_make_with_layers(MOD_MASK_SHIFT, KC_EXLM, KC_0, (1 << _PROG)),
+    &ko_make_with_layers(MOD_MASK_SHIFT, KC_HASH, KC_GRV, (1 << _PROG)),
     NULL // Null terminate the array of overrides!
 };
 
@@ -266,7 +267,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 // Runs just one time when the keyboard initializes.
 void keyboard_post_init_user(void) {
-
+#ifdef RGBLIGHT_ENABLE
+    rgblight_setrgb(0,0,0);
+#endif
+    ergodox_board_led_off();
+    layer_on(_PROG);
 };
 
 #define layer_leds(layer) { \
@@ -304,7 +309,6 @@ void keyboard_post_init_user(void) {
 
 // Runs whenever there is a layer state change.
 layer_state_t layer_state_set_user(layer_state_t layer_state) {
-    ergodox_board_led_off();
     ergodox_right_led_1_off();
     ergodox_right_led_2_off();
     ergodox_right_led_3_off();
@@ -317,7 +321,6 @@ layer_state_t layer_state_set_user(layer_state_t layer_state) {
 };
 
 layer_state_t default_layer_state_set_user(layer_state_t default_layer_state) {
-    ergodox_board_led_off();
     ergodox_right_led_1_off();
     ergodox_right_led_2_off();
     ergodox_right_led_3_off();
@@ -328,3 +331,19 @@ layer_state_t default_layer_state_set_user(layer_state_t default_layer_state) {
     else { layer_leds(default_layer) }
     return default_layer_state;
 };
+
+void suspend_power_down_user(void) {
+    ergodox_right_led_1_off();
+    ergodox_right_led_2_off();
+    ergodox_right_led_3_off();
+#ifdef RGBLIGHT_ENABLE
+    rgblight_setrgb(0,0,0);
+#endif
+}
+
+void suspend_wakeup_init_user(void) {
+    layer_state_set_user(layer_state);
+#ifdef RGBLIGHT_ENABLE
+    rgblight_setrgb(0,0,0);
+#endif
+}
