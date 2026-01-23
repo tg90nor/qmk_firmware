@@ -42,7 +42,7 @@ enum custom_keycodes {
     _TOGGLE,
 };
 
-const key_override_t **key_overrides = (const key_override_t *[]){
+const key_override_t *key_overrides[] = {
     &ko_make_basic(MOD_MASK_SHIFT, KC_VOLD, KC_MUTE),
     &ko_make_with_layers(MOD_MASK_SHIFT, KC_DLR, KC_TILD, (1 << _PROG)),
     &ko_make_with_layers(MOD_MASK_SHIFT, KC_LPRN, KC_RPRN, (1 << _PROG)),
@@ -62,7 +62,6 @@ const key_override_t **key_overrides = (const key_override_t *[]){
     &ko_make_with_layers(MOD_MASK_SHIFT, KC_PLUS, KC_9, (1 << _PROG)),
     &ko_make_with_layers(MOD_MASK_SHIFT, KC_EXLM, KC_0, (1 << _PROG)),
     &ko_make_with_layers(MOD_MASK_SHIFT, KC_HASH, KC_GRV, (1 << _PROG)),
-    NULL // Null terminate the array of overrides!
 };
 
 // clang-format off
@@ -74,7 +73,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB          ,KC_SCLN        ,KC_COMM        ,KC_DOT         ,KC_P           ,KC_Y           ,KC_LBRC        ,
     KC_LCTL         ,KC_A           ,KC_O           ,KC_E           ,KC_U           ,KC_I           ,
     KC_LSFT         ,KC_QUOT        ,KC_Q           ,KC_J           ,KC_K           ,KC_X           ,KC_SLSH        ,
-    LT(_RNUM)       ,KC_LGUI        ,KC_LALT        ,KC_LEFT        ,KC_UP          ,
+    LT(_RNUM,KC_NO) ,KC_LGUI        ,KC_LALT        ,KC_LEFT        ,KC_UP          ,
                      KC_VOLD        ,KC_VOLU        ,
                                      KC_MEH         ,
     KC_SPC          ,KC_BSPC        ,KC_PGUP        ,
@@ -94,7 +93,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB          ,KC_Q           ,KC_W           ,KC_E           ,KC_R           ,KC_T           ,KC_LBRC        ,
     KC_LCTL         ,KC_A           ,KC_S           ,KC_D           ,KC_F           ,KC_G           ,
     KC_LSFT         ,KC_Z           ,KC_X           ,KC_C           ,KC_V           ,KC_B           ,KC_QUOT        ,
-    LT(_RNUM)       ,KC_LGUI        ,KC_LALT        ,KC_LEFT        ,KC_UP          ,
+    LT(_RNUM,KC_NO) ,KC_LGUI        ,KC_LALT        ,KC_LEFT        ,KC_UP          ,
                      KC_VOLD        ,KC_VOLU        ,
                                      KC_MEH         ,
     KC_SPC          ,KC_BSPC        ,KC_PGUP        ,
@@ -153,7 +152,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______         ,_______        ,_______        ,_______        ,_______        ,_______        ,_______        ,
     _______         ,_______        ,_______        ,_______        ,_______        ,_______        ,_______        ,
     _______         ,_______        ,_______        ,_______        ,_______        ,_______        ,
-    _______         ,_TOGGLE        ,_______        ,_______        ,_______        ,_______        ,_______        ,
+    _______         ,_TOGGLE        ,TG(_PROG)      ,TG(_FUNC)      ,_______        ,_______        ,_______        ,
     _______         ,_______        ,_______        ,_______        ,_______        ,
                      _______        ,_______        ,
                                      _______        ,
