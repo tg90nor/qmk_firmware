@@ -273,62 +273,26 @@ void keyboard_post_init_user(void) {
     layer_on(_PROG);
 };
 
-#define layer_leds(layer) { \
-    switch (layer) { \
-        case 0: \
-            break; \
-        case 1: \
-            ergodox_right_led_1_on(); \
-            break; \
-        case 2: \
-            ergodox_right_led_2_on(); \
-            break; \
-        case 3: \
-            ergodox_right_led_3_on(); \
-            break; \
-        case 4: \
-            ergodox_right_led_1_on(); \
-            ergodox_right_led_2_on(); \
-            break; \
-        case 5: \
-            ergodox_right_led_1_on(); \
-            ergodox_right_led_3_on(); \
-            break; \
-        case 6: \
-            ergodox_right_led_2_on(); \
-            ergodox_right_led_3_on(); \
-            break; \
-        case 7: \
-            ergodox_right_led_1_on(); \
-            ergodox_right_led_2_on(); \
-            ergodox_right_led_3_on(); \
-            break; \
-    } \
-}
-
 // Runs whenever there is a layer state change.
-layer_state_t layer_state_set_user(layer_state_t layer_state) {
+layer_state_t layer_state_set_user(layer_state_t state) {
     ergodox_right_led_1_off();
     ergodox_right_led_2_off();
     ergodox_right_led_3_off();
 
-    uint8_t layer = get_highest_layer(layer_state);
-    uint8_t default_layer = get_highest_layer(default_layer_state);
-    if (layer > default_layer) { layer_leds(layer) }
-    else { layer_leds(default_layer) }
-    return layer_state;
-};
+    // The `state` passed to this function can be just the momentary layer state.
+    // We must combine it with the default layer state to get the full picture.
+    layer_state_t full_state = default_layer_state | state;
 
-layer_state_t default_layer_state_set_user(layer_state_t default_layer_state) {
-    ergodox_right_led_1_off();
-    ergodox_right_led_2_off();
-    ergodox_right_led_3_off();
-
-    uint8_t layer = get_highest_layer(layer_state);
-    uint8_t default_layer = get_highest_layer(default_layer_state);
-    if (layer > default_layer) { layer_leds(layer) }
-    else { layer_leds(default_layer) }
-    return default_layer_state;
+    if (full_state & (1UL << _QWER)) {
+        ergodox_right_led_1_on(); // Red
+    }
+    if (full_state & (1UL << _PROG)) {
+        ergodox_right_led_2_on(); // Green
+    }
+    if (full_state & (1UL << _FUNC)) {
+        ergodox_right_led_3_on(); // Blue
+    }
+    return state;
 };
 
 void suspend_power_down_user(void) {
